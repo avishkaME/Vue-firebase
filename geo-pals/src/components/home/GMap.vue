@@ -27,8 +27,21 @@ export default {
         }
     },
     mounted(){
-        this.renderMap()
-        console.log(firebase.auth().currentUser)
+        //get users geo location
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(pos => {
+                this.lat = pos.coords.latitude
+                this.lng = pos.coords.longitude
+                this.renderMap()
+            }, (err) => {
+                console.log(err)
+                this.renderMap()
+            }, { maximumAge: 60000, timeout:3000 })
+        } else{
+            //position center by default values
+            this.renderMap()
+        }
+        
     }
 }
 </script>
